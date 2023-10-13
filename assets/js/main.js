@@ -5,19 +5,37 @@ const maxRecords = 151
 const limit = 10
 let offset = 0;
 
+function pipeNumber(number, size) {
+    const txt = ''+number;
+    var auxTxt = '';
+    for (let index = 0; index < size - txt.length; index++) {
+        auxTxt += '0';
+    }
+    return auxTxt+txt;
+}
+
 function convertPokemonToLi(pokemon) {
     return `
         <li class="pokemon ${pokemon.type}">
-            <span class="number">#${pokemon.number}</span>
-            <span class="name">${pokemon.name}</span>
+            <div class="header">
+                <span class="name">${pokemon.name}</span>
+                <span class="number">#${pipeNumber(pokemon.number,3)}</span>
+            </div>
 
             <div class="detail">
                 <ol class="types">
                     ${pokemon.types.map((type) => `<li class="type ${type}">${type}</li>`).join('')}
                 </ol>
+                <img src="${pokemon.photo}" alt="${pokemon.name}">
+            </div>
 
-                <img src="${pokemon.photo}"
-                     alt="${pokemon.name}">
+            <div class="stats">
+                ${pokemon.stats.map((e) => {
+                    return `<div 
+                    class="bar" 
+                    title="${e.name}: ${e.base_stat}"
+                    style="background: linear-gradient(90deg, ${e.color} ${e.base_stat}%, white ${e.base_stat}%);"><span>${e.name}: ${e.base_stat}</span></div>`
+                }).join('')}
             </div>
         </li>
     `
